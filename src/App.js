@@ -2,6 +2,9 @@ import './App.css';
 import React, { useState } from 'react';
 import {CSSTransition} from 'react-transition-group';
 import { ReactComponent as Github } from './Icons/Github.svg';
+import { ReactComponent as Caret } from './Icons/caret.svg';
+import { ReactComponent as Chevron } from './Icons/chevron.svg';
+import { ReactComponent as Arrow } from './Icons/arrow.svg';
 import View from './View.js'
 
 function App() {
@@ -9,9 +12,7 @@ function App() {
     <div className="App">
       <NavBar>
         <NavBarItem icon={<Github />} link="https://github.com/QuinPoley"/>
-        <NavBarItem icon="I"/>
-        <NavBarItem icon="J"/>
-        <NavBarItem icon="V">
+        <NavBarItem icon={<Caret />}>
           <DropdownMenu></DropdownMenu>
         </NavBarItem>
       </NavBar>
@@ -29,27 +30,45 @@ function DropdownMenu(){
     setMenuHeight(height);
   }
   function DropdownItem(props){
-    return(
-    <a href="#" className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
-      <span className="icon-button">{props.leftIcon}</span>
-      {props.children}
-      <span className="icon-right">{props.rightIcon}</span>
-
-    </a>
-    )
+    if(props.leftIcon){
+      if(props.rightIcon){
+        return(
+            <a href="#" className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
+              <span className="icon-button">{props.leftIcon}</span>
+              {props.children}
+              <span className="icon-right">{props.rightIcon}</span>
+            </a>
+        )
+      }
+      else{
+        return(
+          <a href="#" className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
+            <span className="icon-button">{props.leftIcon}</span>
+            {props.children}
+          </a>
+      )
+      }
+    }
+    else{
+      return(
+          <a href="#" className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
+            {props.children}
+          </a>
+      )
+    }
   }
   return(
     <div className="dropdown" style={{ height: menuHeight}}>
       <CSSTransition in={activeMenu === 'main'} unmountOnExit timeout={500} classNames="menu-primary" onEnter={calcHeight}>
         <div className="menu">
           <DropdownItem>Hello World</DropdownItem>
-          <DropdownItem leftIcon="S" goToMenu="settings">GoTo Settings</DropdownItem>
+          <DropdownItem leftIcon="S" goToMenu="settings" rightIcon={<Chevron/>}>GoTo Settings</DropdownItem>
         </div>
       </CSSTransition>
       <CSSTransition in={activeMenu === 'settings'} unmountOnExit timeout={500} classNames="menu-secondary">
         <div className="menu">
+          <DropdownItem leftIcon={<Arrow/>} goToMenu="main">GoTo Main</DropdownItem>
           <DropdownItem>Settings World</DropdownItem>
-          <DropdownItem leftIcon="M" goToMenu="main">GoTo Main</DropdownItem>
         </div>
       </CSSTransition>
     </div>
