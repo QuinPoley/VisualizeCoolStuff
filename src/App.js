@@ -1,13 +1,14 @@
 import './App.css';
 import React, { useState } from 'react';
 import {CSSTransition} from 'react-transition-group';
+import { ReactComponent as Github } from './Icons/Github.svg';
 import View from './View.js'
 
 function App() {
   return (
     <div className="App">
       <NavBar>
-        <NavBarItem icon="H"/>
+        <NavBarItem icon={<Github />} link="https://github.com/QuinPoley"/>
         <NavBarItem icon="I"/>
         <NavBarItem icon="J"/>
         <NavBarItem icon="V">
@@ -61,7 +62,7 @@ function NavBarItem(props){
 
   return(
     <li className="nav-item">
-      <a href='#' className="icon-button" onClick={() => setOpen(!open)}>
+      <a href={props.link} className="icon-button" onClick={() => setOpen(!open)}>
         {props.icon}
       </a>
       {open && props.children}

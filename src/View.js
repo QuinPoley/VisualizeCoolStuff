@@ -6,11 +6,11 @@ import * as THREE from 'three';
 function View({name}) {
     const [count, setCount] = useState(0)
 
-    function ViewportInitialize(){
-        setCount(7)
+    function StateCount(num){
+        setCount(num)
     }
 
-    function badFeelingabtThis(){
+    function ViewportInitialize(){
         
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -32,13 +32,13 @@ function View({name}) {
             renderer.render( scene, camera );
         };
         animate();
-        return (renderer.domElement);
+        //return (renderer.domElement);
            
     }
 
     useEffect(() => {
-        ViewportInitialize()
-        const view = badFeelingabtThis()
+        StateCount(10)
+        const view = ViewportInitialize()
     }, [])
     //<div className="View">{view}</div>
     return(
