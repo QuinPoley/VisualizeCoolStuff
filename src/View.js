@@ -4,20 +4,16 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 
-function View({name}) {
-    const [count, setCount] = useState(0)
-
-    function StateCount(num){
-        setCount(num)
-    }
+function View({isSel}) {
 
     function ViewportInitialize(){
         var leftmousedown = false;
         var rightmousedown = false;
         var middlemousedown = false;
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
         var oldx = 0;
         var oldy = 0;
-        var oldz = 0;
         const gridHelper = new THREE.GridHelper( 100, 100 );
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/(window.innerHeight - 76), 0.1, 1000 );
@@ -34,13 +30,13 @@ function View({name}) {
         var geometry = new THREE.BoxGeometry( 1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
         var cube = new THREE.Mesh( geometry, material );
+        cube.name = "Cube";
+        cube.instancetype = "t2.large";
         scene.add( cube );
-        scene.add( gridHelper );
+        //scene.add( gridHelper );
         camera.position.z = 5;
         var animate = function () {
             requestAnimationFrame( animate );
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
             renderer.render( scene, camera );
         };
         animate();
@@ -58,6 +54,30 @@ function View({name}) {
                 default:
                     alert('You have a strange Mouse!');
             }
+            mouse.x = ((e.clientX - 70)/renderer.domElement.width) * 2 - 1;
+            mouse.y = -((e.clientY - 50)/renderer.domElement.height) * 2 + 1;
+            oldx = e.pageX;
+            oldy = e.pageY;
+            raycaster.setFromCamera( mouse, camera );
+            var intersects = raycaster.intersectObjects( scene.children );
+	        if(0 < intersects.length) { // Select obj no dragging
+                if (document.contains(document.getElementById("curselect"))) {
+                    while (document.getElementById("curselect").firstChild) {
+                        document.getElementById("curselect").removeChild(document.getElementById("curselect").firstChild);
+                    }                
+                    document.getElementById("curselect").remove();
+                }
+                var sel = document.createElement("selected");
+                sel.innerHTML = "<p>Cube</p><p>Instance Type: "+ intersects[0].object.instancetype+"</p><p>Location:</p>";
+                //intersects[0].object.name + "\n" +"Color: "+intersects[0].object.material.color
+                sel.id = "curselect";
+                sel.className = "SelectedInView";
+                document.getElementById("clickedon").appendChild(sel);
+		        leftmousedown = false;
+                rightmousedown = false;
+                middlemousedown = false;
+	        }
+            intersects = [];
         }
         function mouseisUp(e){
             leftmousedown = false;
@@ -88,16 +108,13 @@ function View({name}) {
             if(rightmousedown){
                 if(e.pageY > oldy){
                     camera.rotateX((e.pageY - oldy)/180);
-                    console.log("This third");
                     oldy = e.pageY;
                 }
                 else if(e.pageY < oldy){
                     camera.rotateX((e.pageY - oldy)/180);
-                    console.log("This fourth");
                     oldy = e.pageY;
                 }
             }
-
         }
         function keypress(e){
             e = e || window.event;
@@ -131,6 +148,14 @@ function View({name}) {
         //return (renderer.domElement);
            
     }
+    function removeSelected(){
+        if (document.contains(document.getElementById("curselect"))) {
+            while (document.getElementById("curselect").firstChild) {
+                document.getElementById("curselect").removeChild(document.getElementById("curselect").firstChild);
+            }                
+            document.getElementById("curselect").remove();
+        }
+    }
 
     function ImportglHF(){
         var scene = new THREE.Scene();
@@ -161,14 +186,17 @@ function View({name}) {
     }
 
     useEffect(() => {
-        StateCount(10)
         const view = ViewportInitialize()
         //ImportglHF()
     }, [])
+    useEffect(() => {
+        removeSelected()
+    }, isSel)
     //<div className="View">{view}</div>
     return(
-        <div className="view" id="here">
-
+        <div>
+            <div id="clickedon"></div>
+            <div className="view" id="here"></div>
         </div>
     )
 }

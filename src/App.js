@@ -1,11 +1,12 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {CSSTransition} from 'react-transition-group';
 import { ReactComponent as Github } from './Icons/Github.svg';
 import { ReactComponent as Caret } from './Icons/caret.svg';
 import { ReactComponent as Chevron } from './Icons/chevron.svg';
 import { ReactComponent as Arrow } from './Icons/arrow.svg';
 import View from './View.js'
+//var isSelect = React.useContext("false");
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <DropdownMenu></DropdownMenu>
         </NavBarItem>
       </NavBar>
-      <View name="hi"/>
+      <View isSel="{isSelect}"/>
     </div>
   );
 }
@@ -61,7 +62,7 @@ function DropdownMenu(){
     <div className="dropdown" style={{ height: menuHeight}}>
       <CSSTransition in={activeMenu === 'main'} unmountOnExit timeout={500} classNames="menu-primary" onEnter={calcHeight}>
         <div className="menu">
-          <DropdownItem>Hello World</DropdownItem>
+          <DropdownItem>Deselect Current</DropdownItem>
           <DropdownItem leftIcon="S" goToMenu="settings" rightIcon={<Chevron/>}>GoTo Settings</DropdownItem>
         </div>
       </CSSTransition>
