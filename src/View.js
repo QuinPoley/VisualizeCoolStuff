@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -82,6 +82,14 @@ function View({isSel}) {
                 var close = document.createElement("div");
                 close.innerHTML = "";
                 close.className = "button";
+                close.onclick = function(){
+                    if (document.contains(document.getElementById("curselect"))) {
+                        while (document.getElementById("curselect").firstChild) {
+                            document.getElementById("curselect").removeChild(document.getElementById("curselect").firstChild);
+                        }                
+                        document.getElementById("curselect").remove();
+                    }
+                }
                 sel.id = "curselect";
                 sel.className = "SelectedInView";
                 sel.appendChild(close);
@@ -208,9 +216,6 @@ function View({isSel}) {
         const view = ViewportInitialize()
         //ImportglHF()
     }, [])
-    useEffect(() => {
-        removeSelected()
-    }, [isSel])
     //<div className="View">{view}</div>
     return(
         <div>
