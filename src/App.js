@@ -5,6 +5,7 @@ import { ReactComponent as Github } from './Icons/Github.svg';
 import { ReactComponent as Caret } from './Icons/caret.svg';
 import { ReactComponent as Chevron } from './Icons/chevron.svg';
 import { ReactComponent as Arrow } from './Icons/arrow.svg';
+//import { ReactComponent as Settings } from './Icons/Settings.svg';
 import View from './View.js'
 //var isSelect = React.useContext("false");
 
@@ -62,7 +63,9 @@ function DropdownMenu(){
     <div className="dropdown" style={{ height: menuHeight}}>
       <CSSTransition in={activeMenu === 'main'} unmountOnExit timeout={500} classNames="menu-primary" onEnter={calcHeight}>
         <div className="menu">
-          <DropdownItem>Deselect Current</DropdownItem>
+          <DropdownItem>Load New Region</DropdownItem>
+          <DropdownItem>Clear View</DropdownItem>
+          <DropdownItem>View Controls</DropdownItem>
           <DropdownItem leftIcon="S" goToMenu="settings" rightIcon={<Chevron/>}>GoTo Settings</DropdownItem>
         </div>
       </CSSTransition>

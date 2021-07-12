@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 
+
 function View({isSel}) {
 
     function ViewportInitialize(){
@@ -29,12 +30,20 @@ function View({isSel}) {
         document.onmousemove = checkdrag;
         var geometry = new THREE.BoxGeometry( 1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        var redmaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
         var cube = new THREE.Mesh( geometry, material );
+        var redcube = new THREE.Mesh( geometry, redmaterial );
+        cube.updateMatrixWorld();
+        redcube.position.x = 3;
+        redcube.updateMatrixWorld();
         cube.name = "Cube";
+        redcube.name = "RedCube"
         cube.instancetype = "t2.large";
         scene.add( cube );
-        //scene.add( gridHelper );
-        camera.position.z = 5;
+        scene.add(redcube);
+        scene.add( gridHelper );
+        camera.position.y = 5;
+        camera.rotateX(-1.8);
         var animate = function () {
             requestAnimationFrame( animate );
             renderer.render( scene, camera );
@@ -60,7 +69,7 @@ function View({isSel}) {
             oldy = e.pageY;
             raycaster.setFromCamera( mouse, camera );
             var intersects = raycaster.intersectObjects( scene.children );
-	        if(0 < intersects.length) { // Select obj no dragging
+	        if(0 < intersects.length && intersects[0].object.name) { // Select obj no dragging
                 if (document.contains(document.getElementById("curselect"))) {
                     while (document.getElementById("curselect").firstChild) {
                         document.getElementById("curselect").removeChild(document.getElementById("curselect").firstChild);
@@ -70,9 +79,19 @@ function View({isSel}) {
                 var sel = document.createElement("selected");
                 sel.innerHTML = "<p>Cube</p><p>Instance Type: "+ intersects[0].object.instancetype+"</p><p>Location:</p>";
                 //intersects[0].object.name + "\n" +"Color: "+intersects[0].object.material.color
+                var close = document.createElement("div");
+                close.innerHTML = "";
+                close.className = "button";
                 sel.id = "curselect";
                 sel.className = "SelectedInView";
+                sel.appendChild(close);
                 document.getElementById("clickedon").appendChild(sel);
+                
+                //var xbutton = document.createElement("button");
+                //xbutton.className = "icon-right";
+                //xbutton.innerHTML = "{<Arrow/>}";
+                //xbutton.onclick = removeSelected();
+                //sel.appendChild(xbutton);
 		        leftmousedown = false;
                 rightmousedown = false;
                 middlemousedown = false;
@@ -191,7 +210,7 @@ function View({isSel}) {
     }, [])
     useEffect(() => {
         removeSelected()
-    }, isSel)
+    }, [isSel])
     //<div className="View">{view}</div>
     return(
         <div>
