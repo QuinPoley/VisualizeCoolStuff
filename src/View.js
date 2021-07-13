@@ -63,13 +63,23 @@ function View({isSel}) {
                 default:
                     alert('You have a strange Mouse!');
             }
-            mouse.x = ((e.clientX - 70)/renderer.domElement.width) * 2 - 1;
-            mouse.y = -((e.clientY - 50)/renderer.domElement.height) * 2 + 1;
+            var rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ( ( e.clientX - rect.left ) / rect.width ) * 2 - 1;
+            mouse.y = - ( ( e.clientY - rect.top ) / rect.height ) * 2 + 1;
             oldx = e.pageX;
             oldy = e.pageY;
             raycaster.setFromCamera( mouse, camera );
             var intersects = raycaster.intersectObjects( scene.children );
-	        if(0 < intersects.length && intersects[0].object.name) { // Select obj no dragging
+	        if(0 < intersects.length) { // Select obj no dragging
+                var i = 0;
+                var cont = false;
+                while(i < intersects.length){
+                    if(intersects[i].object.name != ""){
+                        cont = true;
+                    }
+                    i++;
+                }
+                if(!(cont)){return}
                 if (document.contains(document.getElementById("curselect"))) {
                     while (document.getElementById("curselect").firstChild) {
                         document.getElementById("curselect").removeChild(document.getElementById("curselect").firstChild);
