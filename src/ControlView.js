@@ -2,15 +2,11 @@ import React, {useContext, useEffect, useState} from "react";
 
 
 
-function ControlView({ Open, setOpen }){
-    useEffect(() => {
-        console.log(Open);
-    }, [Open]);
-    
-    if(Open){
+function ControlView({ isOpen, setisOpen }){
+    if({isOpen}){
     return (
         <div className="helperpanel">
-            <div className="button" onClick={console.log("Staet")}></div>
+            <div className="button"></div>
             <b>Controls</b>
             <p>Pan Left/Right:   <b style={{float: 'right'}}>Left Click Drag</b></p>
             <p>Pan Up/Down:      <b style={{float: 'right'}}>Right Click Drag</b></p>

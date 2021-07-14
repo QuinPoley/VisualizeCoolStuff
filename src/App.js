@@ -6,12 +6,16 @@ import { ReactComponent as Caret } from './Icons/caret.svg';
 import { ReactComponent as Chevron } from './Icons/chevron.svg';
 import { ReactComponent as Arrow } from './Icons/arrow.svg';
 //import { ReactComponent as Settings } from './Icons/Settings.svg';
+//import * as THREE from 'three';
+//import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+//import ControlView from './ControlView.js';
 import View from './View.js'
 //var isSelect = React.useContext("false");
 
 
 function App() {
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setisOpen] = useState();
+  
   useEffect(() => {
     console.log("value of 'a' changed to", isOpen);
   }, [isOpen]);
@@ -20,7 +24,7 @@ function App() {
       <NavBar>
         <NavBarItem icon={<Github />} link="https://github.com/QuinPoley"/>
         <NavBarItem icon={<Caret />}>
-          <DropdownMenu></DropdownMenu>
+          <DropdownMenu setisOpen={setisOpen}></DropdownMenu>
         </NavBarItem>
       </NavBar>
       <View isOpen={isOpen} setisOpen={setisOpen}/>
@@ -28,7 +32,7 @@ function App() {
   );
 }
 
-function DropdownMenu(){
+function DropdownMenu({setisOpen}){
   const [activeMenu, setActiveMenu] = useState('main');
   const [menuHeight, setMenuHeight] = useState(null);
   
@@ -70,7 +74,7 @@ function DropdownMenu(){
         <div className="menu">
           <DropdownItem>Load New Region</DropdownItem>
           <DropdownItem>Clear View</DropdownItem>
-          <DropdownItem onClick={console.log("cool")}>View Controls</DropdownItem>
+          <DropdownItem onClick={console.log("setisOpen(true)")}>View Controls</DropdownItem>
           <DropdownItem leftIcon="S" goToMenu="settings" rightIcon={<Chevron/>}>GoTo Settings</DropdownItem>
         </div>
       </CSSTransition>

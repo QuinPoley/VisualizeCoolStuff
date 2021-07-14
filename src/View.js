@@ -184,7 +184,15 @@ function View({isOpen, setisOpen}) {
                 camera.rotateX(-10/180) 
             }
             else if (e.keyCode == '89') { // Y 
-                setisOpen(!isOpen);
+                console.log(isOpen)
+                if(isOpen){
+                    setisOpen(false)
+                }
+                else{
+                    setisOpen(true);
+                    console.log("Changing state to true");
+                }
+                console.log(isOpen);
             }
             //camera.updateProjectionMatrix();
         }
@@ -236,7 +244,7 @@ function View({isOpen, setisOpen}) {
         <div>
             <div id="clickedon"></div>
 
-            <ControlView Open={isOpen} setOpen={setisOpen}></ControlView>
+            <ControlView isOpen={isOpen} setisOpen={setisOpen}></ControlView>
             <div className="view" id="here"></div>
         </div>
     )
