@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {CSSTransition} from 'react-transition-group';
 import { ReactComponent as Github } from './Icons/Github.svg';
 import { ReactComponent as Caret } from './Icons/caret.svg';
@@ -9,7 +9,12 @@ import { ReactComponent as Arrow } from './Icons/arrow.svg';
 import View from './View.js'
 //var isSelect = React.useContext("false");
 
+
 function App() {
+  const [isOpen, setisOpen] = useState(false);
+  useEffect(() => {
+    console.log("value of 'a' changed to", isOpen);
+  }, [isOpen]);
   return (
     <div className="App">
       <NavBar>
@@ -18,7 +23,7 @@ function App() {
           <DropdownMenu></DropdownMenu>
         </NavBarItem>
       </NavBar>
-      <View isSel="{isSelect}"/>
+      <View isOpen={isOpen} setisOpen={setisOpen}/>
     </div>
   );
 }
@@ -26,7 +31,7 @@ function App() {
 function DropdownMenu(){
   const [activeMenu, setActiveMenu] = useState('main');
   const [menuHeight, setMenuHeight] = useState(null);
-
+  
   function calcHeight(el){
     const height = el.offsetHeight;
     setMenuHeight(height);
@@ -65,7 +70,7 @@ function DropdownMenu(){
         <div className="menu">
           <DropdownItem>Load New Region</DropdownItem>
           <DropdownItem>Clear View</DropdownItem>
-          <DropdownItem>View Controls</DropdownItem>
+          <DropdownItem onClick={console.log("cool")}>View Controls</DropdownItem>
           <DropdownItem leftIcon="S" goToMenu="settings" rightIcon={<Chevron/>}>GoTo Settings</DropdownItem>
         </div>
       </CSSTransition>

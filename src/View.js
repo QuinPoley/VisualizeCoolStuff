@@ -1,11 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import * as THREE from 'three';
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import ControlView from './ControlView.js';
 
 
 
-function View({isSel}) {
+
+function View({isOpen, setisOpen}) {
+    
 
     function ViewportInitialize(){
         var leftmousedown = false;
@@ -180,6 +183,9 @@ function View({isSel}) {
             else if (e.keyCode == '88') { // X
                 camera.rotateX(-10/180) 
             }
+            else if (e.keyCode == '89') { // Y 
+                setisOpen(!isOpen);
+            }
             //camera.updateProjectionMatrix();
         }
         //return (renderer.domElement);
@@ -224,12 +230,13 @@ function View({isSel}) {
 
     useEffect(() => {
         const view = ViewportInitialize()
-        //ImportglHF()
     }, [])
     //<div className="View">{view}</div>
     return(
         <div>
             <div id="clickedon"></div>
+
+            <ControlView Open={isOpen} setOpen={setisOpen}></ControlView>
             <div className="view" id="here"></div>
         </div>
     )
